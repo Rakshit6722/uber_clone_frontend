@@ -11,6 +11,8 @@ const UserLogin = () => {
         e.preventDefault()
         setUserData({ email, password })
         console.log(userData)
+        setEmail('')
+        setPassword('')
     }
 
     return (
