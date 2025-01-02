@@ -11,6 +11,8 @@ const CaptainLogin = () => {
         e.preventDefault()
         setCaptainData({ email, password })
         console.log(userData)
+        setEmail('')
+        setPassword('')
     }
 
     return (
