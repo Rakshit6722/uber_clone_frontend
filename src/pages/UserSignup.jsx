@@ -1,20 +1,24 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
-
+import { Link, useNavigate } from 'react-router-dom'
+import { register } from '../services/loginService'
+import { UserDataContext } from '../context/UserContext'
+import { useContext } from 'react'
 const UserSignup = () => {
+
+    const navigate = useNavigate()
+    const {setUser} = useContext(UserDataContext)
 
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const [userData, setUserData] = useState({})
 
-    const submitHandler = (e) => {
+    const submitHandler = async (e) => {
         e.preventDefault();
 
         console.log(firstName, lastName, email, password)
 
-        const updatedUserData = {
+        const newUser = {
           fullName: {
             firstName,
             lastName,
@@ -22,10 +26,8 @@ const UserSignup = () => {
           email,
           password,
         };
-    
-        setUserData(updatedUserData);
-    
-        console.log('User Data Submitted:', updatedUserData);
+
+        await register(newUser, navigate, setUser)
 
         setFirstName('')
         setLastName('')
