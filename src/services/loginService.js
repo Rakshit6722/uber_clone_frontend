@@ -16,6 +16,7 @@ export const register = async (userData, navigate, setUser) => {
         if (response.status === 201) {
             const data = response.data
             setUser(data.user)
+            localStorage.setItem('token', data.token)
             toast.success('Registration successful!')
             navigate('/home')
         }
@@ -31,11 +32,30 @@ export const login = async (userData, navigate, setUser) => {
         if(response.status === 200){
             const data = response.data
             setUser(data.user)
+            localStorage.setItem('token', data.token)
             toast.success('Login successful!')
             navigate('/home')
         }
     }catch(err){
         console.log(err)
         toast.error(err.response?.data?.message || 'Login failed. Please try again.')
+    }
+}
+
+export const logout = async (navigate,token) => {
+    try{
+        const response = await apiConnector("POST",userApi.logout,null,{
+            Authorization: `Bearer ${token}`
+        })
+
+        if(response.status === 200){
+            navigate('/login')
+            localStorage.removeItem('token')
+        }else{
+            toast.error('Logout failed. Please try again.')
+        }
+    }catch(err){
+        console.log(err)
+        toast.error(err.response?.data?.message || 'Logout failed. Please try again.')
     }
 }
