@@ -17,6 +17,7 @@ export const register = async (userData, navigate, setUser) => {
             const data = response.data
             setUser(data.user)
             localStorage.setItem('token', data.token)
+            localStorage.setItem('user', JSON.stringify(data.user))
             toast.success('Registration successful!')
             navigate('/home')
         }
@@ -33,6 +34,7 @@ export const login = async (userData, navigate, setUser) => {
             const data = response.data
             setUser(data.user)
             localStorage.setItem('token', data.token)
+            localStorage.setItem('user', JSON.stringify(data.user))
             toast.success('Login successful!')
             navigate('/home')
         }

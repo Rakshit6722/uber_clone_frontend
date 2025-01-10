@@ -22,8 +22,9 @@ export const registerCaptain = async (userData, navigate, setCaptain) => {
             const data = response.data
             setCaptain(data.captain)
             localStorage.setItem('token', data.token)
+            localStorage.setItem('captain', JSON.stringify(data.captain))
             toast.success('Registration successful!')
-            navigate('/home')
+            navigate('/captain-home')
         }
     } catch (err) {
         console.log(err)
@@ -38,8 +39,9 @@ export const captainLogin = async (userData, navigate, setCaptain) => {
             const data = response.data
             setCaptain(data.captain)
             localStorage.setItem('token', data.token)
+            localStorage.setItem('captain', JSON.stringify(data.captain))
             toast.success('Login successful!')
-            navigate('/home')
+            navigate('/captain-home')
         }
     }catch(err){
         console.log(err)
