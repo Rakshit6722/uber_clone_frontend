@@ -1,21 +1,26 @@
-import apiConnector from "./apiConnector"
-import { userApi } from "./api"
-import { UserDataContext } from "../context/UserContext"
+import { captainApi } from "./api.js"
+import apiConnector from "./apiConnector.js"
 import { toast } from 'react-toastify'
 
-export const register = async (userData, navigate, setUser) => {
+export const registerCaptain = async (userData, navigate, setCaptain) => {
     try {
-        const response = await apiConnector("POST", userApi.register, {
+        const response = await apiConnector("POST", captainApi.register, {
             fullname: {
                 firstname: userData.fullName.firstName,
                 lastname: userData.fullName.lastName
             },
             email: userData.email,
-            password: userData.password
+            password: userData.password,
+            vehicle:{
+                color: userData.vehicle.color,
+                plate: userData.vehicle.plate,
+                capacity: userData.vehicle.capacity,
+                vehicleType: userData.vehicle.type
+            }
         })
         if (response.status === 201) {
             const data = response.data
-            setUser(data.user)
+            setCaptain(data.captain)
             localStorage.setItem('token', data.token)
             toast.success('Registration successful!')
             navigate('/home')
@@ -26,12 +31,12 @@ export const register = async (userData, navigate, setUser) => {
     }
 }
 
-export const login = async (userData, navigate, setUser) => {
+export const captainLogin = async (userData, navigate, setCaptain) => {
     try{
-        const response = await apiConnector("POST", userApi.login, userData)
+        const response = await apiConnector("POST", captainApi.login, userData)
         if(response.status === 200){
             const data = response.data
-            setUser(data.user)
+            setCaptain(data.captain)
             localStorage.setItem('token', data.token)
             toast.success('Login successful!')
             navigate('/home')
@@ -42,22 +47,24 @@ export const login = async (userData, navigate, setUser) => {
     }
 }
 
-export const logout = async (navigate,token) => {
+export const captainLogout = async (navigate, token) => {
     try{
-        // const response = await apiConnector("POST",userApi.logout,null,{
+        // const response = await apiConnector("POST", captainApi.logout, null, {
         //     Authorization: `Bearer ${token}`
         // })
-
         // if(response.status === 200){
-        //     navigate('/login')
+        //     navigate('/captain-login')
+        //     toast.success('Logout successful!')
         //     localStorage.removeItem('token')
         // }else{
         //     toast.error('Logout failed. Please try again.')
         // }
         localStorage.removeItem('token')
-        navigate('/login')
+        navigate('/captain-login')
+
     }catch(err){
         console.log(err)
         toast.error(err.response?.data?.message || 'Logout failed. Please try again.')
     }
 }
+

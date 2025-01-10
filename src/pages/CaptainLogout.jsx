@@ -1,13 +1,14 @@
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { logout } from '../services/loginService'
+import { captainLogout } from '../services/captainAuth'
 
-const Logout = () => {
+const CaptainLogout = () => {
+
     const navigate = useNavigate()
     const token = localStorage.getItem('token')
 
     useEffect(() => {
-        logout(navigate,token)
+        captainLogout(navigate, token)
     },[])
 
   return (
@@ -17,4 +18,4 @@ const Logout = () => {
   )
 }
 
-export default Logout
+export default CaptainLogout

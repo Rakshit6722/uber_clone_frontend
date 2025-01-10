@@ -1,16 +1,20 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useContext, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { captainLogin } from '../services/captainAuth'
+import { captainDataContext } from '../context/CaptainContextProvider'
 
 const CaptainLogin = () => {
 
+    const navigate = useNavigate()
+    const {setCaptain} = useContext(captainDataContext)
+
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const [captainData, setCaptainData] = useState({})
 
-    const submitHandler = (e) => {
+    const submitHandler = async (e) => {
         e.preventDefault()
-        setCaptainData({ email, password })
-        console.log(userData)
+        const captainData = { email, password }
+        await captainLogin(captainData, navigate, setCaptain)
         setEmail('')
         setPassword('')
     }

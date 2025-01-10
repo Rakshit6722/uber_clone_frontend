@@ -1,35 +1,51 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState, useContext } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { registerCaptain } from '../services/captainAuth.js'
+import { captainDataContext } from '../context/CaptainContextProvider.jsx'
 
 const CaptainSignup = () => {
+
+    const navigate = useNavigate()
+    const {setCaptain} = useContext(captainDataContext)
 
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
-    const submitHandler = (e) => {
+    const [vehicleColor, setVehicleColor] = useState('')
+    const [vehiclePlate, setVehiclePlate] = useState('')
+    const [vehicleCapacity, setVehicleCapacity] = useState('')
+    const [vehicleType, setVehicleType] = useState('')
+
+    const submitHandler = async (e) => {
         e.preventDefault();
 
-        console.log(firstName, lastName, email, password)
-
-        const updatedUserData = {
+        const captainData = {
           fullName: {
             firstName,
             lastName,
           },
           email,
           password,
+          vehicle: {
+            color: vehicleColor,
+            plate: vehiclePlate,
+            capacity: vehicleCapacity,
+            type: vehicleType
+          }
         };
-    
-        setUserData(updatedUserData);
-    
-        console.log('User Data Submitted:', updatedUserData);
+
+        await registerCaptain(captainData, navigate, setCaptain)
 
         setFirstName('')
         setLastName('')
         setEmail('')
         setPassword('')
+        setVehicleColor('')
+        setVehiclePlate('')
+        setVehicleCapacity('')
+        setVehicleType('')
     }
 
     return (
@@ -38,7 +54,7 @@ const CaptainSignup = () => {
                 <div>
                     <div className='p-7 h-screen flex flex-col justify-between'>
                         <form onSubmit={submitHandler}>
-                            <img className='w-16 mb-5' src="https://www.svgrepo.com/show/505031/uber-driver.svg" alt="" />
+                            <img className='w-16 mb-3' src="https://www.svgrepo.com/show/505031/uber-driver.svg" alt="" />
 
                             <h3 className='text-lg font-medium mb-2'>What's your name</h3>
                             <div className='flex gap-4 mb-5'>
@@ -68,6 +84,50 @@ const CaptainSignup = () => {
                                 placeholder='email@example.com'
                                 className='bg-[#eeeeee] mb-5 rounded px-4 py-2 border w-full text-lg placeholder:text-base' />
 
+
+
+                            <h3 className='text-lg font-medium mb-2'>Vehicle Information</h3>
+                            <div className='flex gap-4 mb-5'>
+                                <input
+                                    required
+                                    value={vehicleColor}
+                                    onChange={(e) => setVehicleColor(e.target.value)}
+                                    placeholder='Vehicle Color'
+                                    type="text"
+                                    className='bg-[#eeeeee] rounded px-4 w-[50%] py-2 border text-lg placeholder:text-base'
+                                />
+                                <input
+                                    required
+                                    value={vehiclePlate}
+                                    onChange={(e) => setVehiclePlate(e.target.value)}
+                                    placeholder='License Plate'
+                                    type="text"
+                                    className='bg-[#eeeeee] rounded px-4 py-2 w-[50%] border text-lg placeholder:text-base'
+                                />
+                            </div>
+
+                            <div className='flex gap-4 mb-5'>
+                                <input
+                                    required
+                                    value={vehicleCapacity}
+                                    onChange={(e) => setVehicleCapacity(e.target.value)}
+                                    placeholder='Passenger Capacity'
+                                    type="number"
+                                    className='bg-[#eeeeee] rounded px-4 w-[50%] py-2 border text-lg placeholder:text-base'
+                                />
+                                <select
+                                    required
+                                    value={vehicleType}
+                                    onChange={(e) => setVehicleType(e.target.value)}
+                                    className='bg-[#eeeeee] rounded px-3 py-1.5 w-[50%] border text-sm'
+                                >
+                                    <option value="">Vehicle Type</option>
+                                    <option value="car">Car</option>
+                                    <option value="bike">Bike</option>
+                                    <option value="auto">Auto</option>
+                                </select>
+                            </div>
+
                             <h3 className='text-lg font-medium mb-2'>Enter Password</h3>
                             <input
                                 required
@@ -78,7 +138,7 @@ const CaptainSignup = () => {
                             />
 
                             <button
-                                className='bg-[#111] text-white font-semibold mb-7 rounded px-4 py-2 border w-full text-lg placeholder:text-base'
+                                className='bg-[#111] text-white font-semibold mb-2 rounded px-4 py-2 border w-full text-lg placeholder:text-base'
                             >
                                 Create Account
                             </button>
@@ -89,15 +149,6 @@ const CaptainSignup = () => {
                                 Login here
                             </Link></p>
                         </form>
-
-                        <div>
-                            <p className='text-[10px] leading-tight text-gray-500'>
-                                By proceeding, you consent to get calls, WhatsApp or
-                                SMS from Uber for account and service related purposes.
-                                Get to know more about how we process your data and
-                                protect your privacy.
-                            </p>
-                        </div>
                     </div>
 
                 </div>
