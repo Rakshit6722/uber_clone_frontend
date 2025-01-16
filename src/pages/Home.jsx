@@ -3,14 +3,21 @@ import { useGSAP } from '@gsap/react'
 import { gsap } from 'gsap'
 import 'remixicon/fonts/remixicon.css'
 import LocationPanel from '../components/LocationPanel'
+import VehiclePanel from '../components/VehiclePanel'
+import ConfirmRide from '../components/ConfirmRide'
 
 const Home = () => {
 
   const [pickup, setPickup] = useState('')
   const [destination, setDestination] = useState('')
   const [panel, setPanel] = useState(false)
+  // const [active, setActive] = useState(false)
+  const [vehiclePanel, setVehiclePanel] = useState(false)
+  const [confirmRidePanel, setConfirmRidePanel] = useState(false)
   const panelRef = useRef(null)
   const panelCloseRef = useRef(null)
+  const confirmVehicleRef = useRef(null)
+  const vehicleRef = useRef(null)
 
   const submitHandler = (e) => {
     e.preventDefault()
@@ -27,11 +34,38 @@ const Home = () => {
     }
   }, [panel]);
 
+  useEffect(() => {
+    if (vehiclePanel) {
+      gsap.to(vehicleRef.current, {
+        transform: 'translateY(0)'
+      })
+    } else {
+      gsap.to(vehicleRef.current, {
+        transform: 'translateY(100%)'
+      })
+    }
+  }, [vehiclePanel])
+
+  useEffect(() => {
+    console.log(confirmRidePanel)
+    console.log(confirmVehicleRef.current)
+    if (confirmRidePanel) {
+      gsap.to(confirmVehicleRef.current, {
+        transform: 'translateY(0)'
+      })
+    } else {
+      gsap.to(confirmVehicleRef.current, {
+        transform: 'translateY(100%)'
+      })
+    }
+  }, [confirmRidePanel])
+
   return (
-    <div className='relative h-screen'>
+    <div className='relative h-screen overflow-hidden'>
       <img className='w-16 absolute top-5 left-5' src={import.meta.env.VITE_UBER_LOGO} alt="" />
 
-      <div className="h-screen w-screen">
+      <div
+        className="h-screen w-screen">
         {/* Image for temporary use */}
         <img className='h-full w-full object-cover' src="https://miro.medium.com/v2/resize:fit:1400/0*gwMx05pqII5hbfmX.gif" alt="" />
       </div>
@@ -72,12 +106,16 @@ const Home = () => {
         </div>
 
         <div ref={panelRef} className={`h-0 bg-white ${panel ? 'block' : 'hidden'} opacity-0`}>
-          <LocationPanel />
+          <LocationPanel panel={panel} setPanel={setPanel} vehiclePanel={vehiclePanel} setVehiclePanel={setVehiclePanel} />
         </div>
+      </div>
 
-        <div>
+      <div>
+        <VehiclePanel vehicleRef={vehicleRef} setVehiclePanel={setVehiclePanel} setConfirmRidePanel={setConfirmRidePanel} />
+      </div>
 
-        </div>
+      <div>
+        <ConfirmRide confirmVehicleRef={confirmVehicleRef} setConfirmRidePanel={setConfirmRidePanel}/>
       </div>
     </div>
   )
