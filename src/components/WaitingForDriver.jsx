@@ -4,7 +4,7 @@ const WaitingForDriver = ({WaitingForDriver}) => {
   return (
     <div>
       <div>
-        <div onClick={() => setVehicleFound(false)} className='flex items-center justify-center absolute right-0 bg-gray-100 rounded-full h-10 w-10 top-6 mr-4'><i className="text-2xl ri-arrow-down-wide-line"></i></div>
+        {/* <div onClick={() => setVehicleFound(false)} className='flex items-center justify-center absolute right-0 bg-gray-100 rounded-full h-10 w-10 top-6 mr-4'><i className="text-2xl ri-arrow-down-wide-line"></i></div> */}
 
         <div className='flex items-center justify-between'>
           <img

@@ -17,7 +17,7 @@ const Home = () => {
   const [vehiclePanel, setVehiclePanel] = useState(false)
   const [confirmRidePanel, setConfirmRidePanel] = useState(false)
   const [vehicleFound, setVehicleFound] = useState(false)
-  const [WaitingForDriver, setWaitingForDriver] = useState(false)
+  const [waitingForDriver, setWaitingForDriver] = useState(false)
 
   const panelRef = useRef(null)
   const panelCloseRef = useRef(null)
@@ -29,7 +29,6 @@ const Home = () => {
 
   const submitHandler = (e) => {
     e.preventDefault()
-
   }
 
   useGSAP(() => {
@@ -67,7 +66,7 @@ const Home = () => {
   }, [vehicleFound])
 
   useEffect(() => {
-    if (WaitingForDriver) {
+    if (waitingForDriver) {
       gsap.to(watitingForDriverRef.current, {
         transform: 'translateY(0)'
       })
@@ -76,7 +75,7 @@ const Home = () => {
         transform: 'translateY(100%)'
       })
     }
-  }, [WaitingForDriver])
+  }, [waitingForDriver])
 
 
   useEffect(() => {
@@ -156,7 +155,7 @@ const Home = () => {
       </div>
 
       <div ref={watitingForDriverRef} className='fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-6 pt-12'>
-        <WaitingForDriver WaitingForDriver={WaitingForDriver} />
+        <WaitingForDriver waitingForDriver={waitingForDriver} />
       </div>
     </div>
   )
